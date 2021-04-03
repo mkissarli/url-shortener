@@ -2,6 +2,7 @@ from quart import Quart, request, abort, redirect
 from uuid import uuid4
 import sqlite3
 from sqlite3 import Error
+import pytest
 
 def create_connection(path):
    connection = None
@@ -65,6 +66,11 @@ async def register():
 
    return {"tiny_url":("localhost:5000/" + link)}
 
+"""
+Correct = store
+miss
+"""
+
 @app.route('/<path>', methods=['GET'])
 async def redirect_path(path):
    val = connection.cursor().execute("SELECT path FROM redirects where id=?", (path,)).fetchall()
@@ -73,5 +79,7 @@ async def redirect_path(path):
    else:
       abort(404, "We have not made a tiny url for that yet.")
       return "404"
+
+
 
 app.run()
